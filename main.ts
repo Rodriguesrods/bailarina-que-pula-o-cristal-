@@ -1,278 +1,279 @@
 namespace SpriteKind {
-    export const Crystal = SpriteKind.create()
-    export const GoldenCrystal = SpriteKind.create()
-    export const DizzyCloud = SpriteKind.create()
+    export const Cristal = SpriteKind.create()
 }
 /**
- * ============================
+ * =========================
  * 
- * FUNÇÃO: CRIAR CRISTAL
- * 
- * ============================
- */
-/**
- * ============================
- * 
- * FUNÇÃO: CRISTAL DOURADO
- * 
- * ============================
- */
-/**
- * ============================
- * 
- * FUNÇÃO: NUVEM DE TONTURA
- * 
- * ============================
- */
-/**
- * ============================
- * 
- * CONTROLE DO PULO
- * 
- * ============================
- */
-/**
- * ============================
- * 
- * PEGAR CRISTAL NORMAL
- * 
- * ============================
- */
-/**
- * ============================
- * 
- * PEGAR CRISTAL DOURADO
- * 
- * ============================
- */
-/**
- * ============================
- * 
- * NUVEM DE TONTURA
- * 
- * ============================
- */
-/**
- * ============================
- * 
- * APAGAR OBJETOS QUE SAÍRAM
- * 
- * ============================
- */
-/**
- * ============================
- * 
- * GERADOR DE CRISTAIS
- * 
- * ============================
- */
-/**
- * ============================
- * 
- * GERADOR DE NUVENS
- * 
- * ============================
- */
-/**
- * ============================
- * 
- * MÚSICA
- * 
- * ============================
- */
-/**
- * ============================
- * 
- * FUNDO
- * 
- * ============================
- */
-/**
- * ============================
- * 
- * PLACAR
- * 
- * ============================
- */
-/**
- * ============================
- * 
- * SPRITES
- * 
- * ============================
- */
-/**
- * ============================
- */
-/**
  * VARIÁVEIS
+ * 
+ * =========================
  */
-/**
- * ============================
- */
-sprites.onOverlap(SpriteKind.Player, SpriteKind.DizzyCloud, function (player2, nuvem) {
-    nuvem.destroy(effects.disintegrate, 200)
-    if (!(girando)) {
-        girando = true
-        player2.startEffect(effects.spray, 1000)
-        // Bailarina fica "tonta"
-        player2.vx = 80
-        music.playTone(262, music.beat(BeatFraction.Quarter))
-        pause(1000)
-        player2.vx = 0
-        girando = false
-    }
-})
+// =========================
+// PULO
+// =========================
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
-    // Só pula se estiver próxima do chão
     if (bailarina.y >= 95) {
-        bailarina.vy = -120
-        // Pequeno efeito de giro
+        bailarina.vy = -150
         bailarina.startEffect(effects.trail, 300)
+        music.playTone(659, music.beat(BeatFraction.Sixteenth))
     }
 })
-function criarNuvem () {
-    nuvem = sprites.create(img`
-        . . . . . . . . . . 
-        . . 1 1 . . 1 1 . . 
-        . 1 1 1 1 1 1 1 1 . 
-        1 1 1 1 1 1 1 1 1 1 
-        1 1 1 1 1 1 1 1 1 1 
-        . 1 1 1 1 1 1 1 1 . 
-        . . 1 1 1 1 1 1 . . 
-        . . . 1 1 1 1 . . . 
-        . . . . . . . . . . 
-        `, SpriteKind.DizzyCloud)
-    nuvem.setPosition(randint(10, 150), 0)
-    nuvem.vy = velocidadeCristal
-}
-sprites.onOverlap(SpriteKind.Player, SpriteKind.GoldenCrystal, function (player2, cristal) {
-    cristal.destroy(effects.starField, 300)
-    pontos += 5
-    info.setScore(pontos)
-    // Grande efeito de brilho
-    player2.startEffect(effects.confetti, 700)
-    music.playTone(1047, music.beat(BeatFraction.Eighth))
-    music.playTone(1319, music.beat(BeatFraction.Eighth))
-    game.splash("CRISTAL DOURADO!", "+5 pontos!")
-    if (pontos % 10 == 0) {
-        velocidadeCristal += 8
-    }
-})
-sprites.onOverlap(SpriteKind.Player, SpriteKind.Crystal, function (player2, cristal) {
-    cristal.destroy(effects.disintegrate, 200)
-    pontos += 1
-    info.setScore(pontos)
-    // Efeito de brilho
-    player2.startEffect(effects.hearts, 300)
-    music.playTone(784, music.beat(BeatFraction.Sixteenth))
-    // A cada 10 pontos aumenta a velocidade
-    if (pontos % 10 == 0) {
-        velocidadeCristal += 8
-        game.splash("Mais rápido!", "Velocidade: " + velocidadeCristal)
-    }
-})
+// =========================
+// FUNÇÃO PRA CRIAR CRISTAL
+// =========================
 function criarCristal () {
-    cristal = sprites.create(img`
-        . . . . 7 . . . . 
-        . . . 7 7 7 . . . 
-        . . 7 7 7 7 7 . . 
-        . 7 7 7 7 7 7 7 . 
-        7 7 7 7 7 7 7 7 7 
-        . 7 7 7 7 7 7 7 . 
-        . . 7 7 7 7 7 . . 
-        . . . 7 7 7 . . . 
-        . . . . 7 . . . . 
-        `, SpriteKind.Crystal)
-    cristal.setPosition(randint(10, 150), 0)
-    cristal.vy = velocidadeCristal
+    novo = sprites.create(img`
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . b d b . . . . . . 
+        . . . . . . . b d b c . . . . . 
+        . . . . b b c 5 5 5 c b b . . . 
+        . . . . b 5 5 5 1 5 5 5 b . . . 
+        . . . c c 5 5 5 1 5 5 5 c c . . 
+        . . b b 5 5 5 1 1 1 5 5 5 b b . 
+        . . d d 5 1 1 1 1 1 1 1 5 d d . 
+        . . b b 5 5 5 1 1 1 5 5 5 b b . 
+        . . . c c 5 5 5 1 5 5 5 c c . . 
+        . . . . b 5 5 5 1 5 5 5 b . . . 
+        . . . . b b c 5 5 5 c b b . . . 
+        . . . . . . c b d b c . . . . . 
+        . . . . . . . b d b . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        `, SpriteKind.Cristal)
+    alturaEscolhida = alturasCristal[randint(0, alturasCristal.length - 1)]
+    novo.setPosition(170, alturaEscolhida)
+    novo.vx = 0 - velocidade
+    if (Math.percentChance(15)) {
+        novo.startEffect(effects.halo, 20000)
+    }
+    return novo
 }
-function criarCristalDourado () {
-    cristal2 = sprites.create(img`
-        . . . . 4 . . . . 
-        . . . 4 4 4 . . . 
-        . . 4 4 4 4 4 . . 
-        . 4 4 4 4 4 4 4 . 
-        4 4 4 4 4 4 4 4 4 
-        . 4 4 4 4 4 4 4 . 
-        . . 4 4 4 4 4 . . 
-        . . . 4 4 4 . . . 
-        . . . . 4 . . . . 
-        `, SpriteKind.GoldenCrystal)
-    cristal2.setPosition(randint(10, 150), 0)
-    cristal2.vy = velocidadeCristal - 5
+function piscar () {
+    for (let i = 0; i <= 5; i++) {
+        bailarina.setFlag(SpriteFlag.Invisible, i % 2 == 0)
+        pause(150)
+    }
+    bailarina.setFlag(SpriteFlag.Invisible, false)
+    invencivel = false
 }
-let sorteio = 0
-let cristal2: Sprite = null
-let cristal: Sprite = null
-let pontos = 0
-let nuvem: Sprite = null
-let girando = false
-let bailarina: Sprite = null
-let velocidadeCristal = 0
-velocidadeCristal = 35
-// Bailarina
-bailarina = sprites.create(img`
-    . . . . . . . 5 5 . . . . . . . 
-    . . . . . . 5 5 5 5 . . . . . . 
-    . . . . . . 5 1 1 5 . . . . . . 
-    . . . . . . 5 5 5 5 . . . . . . 
-    . . . . . 5 5 5 5 5 5 . . . . . 
-    . . . . 5 5 2 5 5 2 5 5 . . . . 
-    . . . . 5 5 5 5 5 5 5 5 . . . . 
-    . . . . . 5 5 5 5 5 5 . . . . . 
-    . . . . 5 5 5 5 5 5 5 5 . . . . 
-    . . . . 5 5 . 5 5 . 5 5 . . . . 
-    . . . . 5 . . 5 5 . . 5 . . . . 
-    . . . 5 . . . 5 5 . . . 5 . . . 
-    . . . 5 . . 5 5 5 5 . . 5 . . . 
-    . . 5 5 . 5 5 . . 5 5 . 5 5 . . 
-    . . 5 5 5 5 . . . . 5 5 5 5 . . 
-    . . 5 5 . . . . . . . . 5 5 . . 
-    `, SpriteKind.Player)
-bailarina.setPosition(80, 105)
-bailarina.ay = 250
-info.setScore(0)
-scene.setBackgroundColor(13)
-music.setVolume(60)
-music.playMelody("C5 B A G A B C5 C5 B A G E G A B", music.PlaybackMode.LoopingInBackground)
-game.onUpdate(function () {
-    // Cristais normais
-    for (let cristal3 of sprites.allOfKind(SpriteKind.Crystal)) {
-        if (cristal3.y > 120) {
-            cristal3.destroy()
-        }
+// =========================
+// COLISÃO COM CRISTAL
+// =========================
+sprites.onOverlap(SpriteKind.Player, SpriteKind.Cristal, function (sprite, outro) {
+    if (invencivel) {
+        return
     }
-    // Cristais dourados
-    for (let cristal4 of sprites.allOfKind(SpriteKind.GoldenCrystal)) {
-        if (cristal4.y > 120) {
-            cristal4.destroy()
-        }
-    }
-    // Nuvens
-    for (let nuvem2 of sprites.allOfKind(SpriteKind.DizzyCloud)) {
-        if (nuvem2.y > 120) {
-            nuvem2.destroy()
-        }
-    }
-    // Impede a bailarina de cair
-    if (bailarina.y > 105) {
-        bailarina.y = 105
-        bailarina.vy = 0
-    }
-})
-game.onUpdateInterval(1000, function () {
-    sorteio = randint(1, 100)
-    // 10% de chance de cristal dourado
-    if (sorteio <= 10) {
-        criarCristalDourado()
+    if (bailarina.y < 85) {
+        // passou por cima com sucesso
+        combo += 1
+        let bonus = combo >= 5 ? 5 : 0
+pontos += 2 + bonus
+        info.setScore(pontos)
+        music.playTone(988, music.beat(BeatFraction.Eighth))
+        sprite.startEffect(effects.confetti, 300)
+        outro.destroy()
+        velocidade = Math.min(velocidade + 5, velocidadeMax)
+        cristal = criarCristal()
     } else {
-        criarCristal()
+        // bateu no cristal
+        combo = 0
+        vidas += 0 - 1
+        info.setLife(vidas)
+        music.powerDown.play()
+        outro.destroy()
+        cristal = criarCristal()
+        invencivel = true
+        piscar()
+        if (vidas <= 0) {
+            game.over(false, effects.dissolve)
+        }
     }
 })
-game.onUpdateInterval(3500, function () {
-    // 40% de chance de criar uma nuvem
-    if (randint(1, 100) <= 40) {
-        criarNuvem()
+let pontos = 0
+let invencivel = false
+let alturaEscolhida = 0
+let novo: Sprite = null
+let cristal: Sprite = null
+let bailarina: Sprite = null
+let alturasCristal: number[] = []
+let vidas = 0
+let velocidadeMax = 0
+let velocidade = 0
+let combo = 0
+velocidade = 70
+velocidadeMax = 160
+vidas = 3
+alturasCristal = [105, 96]
+// =========================
+// FUNDO
+// =========================
+scene.setBackgroundColor(9)
+scene.setBackgroundImage(img`
+    dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
+    dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
+    dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
+    dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
+    dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
+    dddddddddddddddddddddd33dddddddddddddddddddddddddddddddddddddd33dddddddddddddddddddddddddddddddddddddd33dddddddddddddddddddddddddddddddddddddd33dddddddddddddddd
+    ddddddddddddddddddddddd3ddddddddddddddddddddddddddddddddddddddd3ddddddddddddddddddddddddddddddddddddddd3ddddddddddddddddddddddddddddddddddddddd3dddddddddddddddd
+    ddddddddddddddddddddd3333dddddddddddddddddddddddddddddddddddd3333dddddddddddddddddddddddddddddddddddd3333dddddddddddddddddddddddddddddddddddd3333ddddddddddddddd
+    dddddddddddddddddddd33333ddddddddddddddddddddddddddddddddddd33333ddddddddddddddddddddddddddddddddddd33333ddddddddddddddddddddddddddddddddddd33333ddddddddddddddd
+    ddddddddddddddddddd3333333ddddddddddddddddddddddddddddddddd3333333ddddddddddddddddddddddddddddddddd3333333ddddddddddddddddddddddddddddddddd3333333dddddddddddddd
+    ddddddddddddddddddd33333d3ddddddddddddddddddddddddddddddddd33333d3ddddddddddddddddddddddddddddddddd33333d3ddddddddddddddddddddddddddddddddd33333d3dddddddddddddd
+    ddddddddddddbddddddd3333ddddddddddddddddddddddddddddbddddddd3333ddddddddddddddddddddddddddddbddddddd3333ddddddddddddddddddddddddddddbddddddd3333dddddddddddddddd
+    ddddddddddddbdddddd3333333ddddddddddddddddddddddddddbdddddd3333333ddddddddddddddddddddddddddbdddddd3333333ddddddddddddddddddddddddddbdddddd3333333dddddddddddddd
+    ddddddddddddbddddd33333333ddddddddddddddddddddddddddbddddd33333333ddddddddddddddddddddddddddbddddd33333333ddddddddddddddddddddddddddbddddd33333333dddddddddddddd
+    ddddddddddddbdddd33333333333ddddddddddddddddddddddddbdddd33333333333ddddddddddddddddddddddddbdddd33333333333ddddddddddddddddddddddddbdddd33333333333dddddddddddd
+    dd33ddddddddbdd3d3333333333333ddddbddddddd33ddddddddbdd3d3333333333333ddddbddddddd33ddddddddbdd3d3333333333333ddddbddddddd33ddddddddbdd3d3333333333333ddddbddddd
+    d33333ddddddbdd333333333333333ddddbdddddd33333ddddddbdd333333333333333ddddbdddddd33333ddddddbdd333333333333333ddddbdddddd33333ddddddbdd333333333333333ddddbddddd
+    33333333ddddbddd33333333333333ddddbddddd33333333ddddbddd33333333333333ddddbddddd33333333ddddbddd33333333333333ddddbddddd33333333ddddbddd33333333333333ddddbddddd
+    333333333ddddbdddd333333333333ddddbddddd333333333ddddbdddd333333333333ddddbddddd333333333ddddbdddd333333333333ddddbddddd333333333ddddbdddd333333333333ddddbddddd
+    d33333333dddddbdddd3333333444444dbbdddd3d33333333dddddbdddd3333333444444dbbdddd3d33333333dddddbdddd3333333444444dbbdddd3d33333333dddddbdddd3333333444444dbbdddd3
+    d333333333dddddbb3333333444444444bdddd3dd333333333dddddbb3333333444444444bdddd3dd333333333dddddbb3333333444444444bdddd3dd333333333dddddbb3333333444444444bdddd3d
+    33333333ddddddddbb33333333443443bbdddddd33333333ddddddddbb33333333443443bbdddddd33333333ddddddddbb33333333443443bbdddddd33333333ddddddddbb33333333443443bbdddddd
+    333333333dddddd333b333333343334bb3ddddd3333333333dddddd333b333333343334bb3ddddd3333333333dddddd333b333333343334bb3ddddd3333333333dddddd333b333333343334bb3ddddd3
+    3333b33dddddd33333333333333333bbdddddd333333b33dddddd33333333333333333bbdddddd333333b33dddddd33333333333333333bbdddddd333333b33dddddd33333333333333333bbdddddd33
+    3333b3333ddddd333333333333333bbddddddd333333b3333ddddd333333333333333bbddddddd333333b3333ddddd333333333333333bbddddddd333333b3333ddddd333333333333333bbddddddd33
+    3333b33b33dddddd333344444333333ddddddd333333b33b33dddddd333344444333333ddddddd333333b33b33dddddd333344444333333ddddddd333333b33b33dddddd333344444333333ddddddd33
+    3333b33b33ddddd34444444444333333333ddd333333b33b33ddddd34444444444333333333ddd333333b33b33ddddd34444444444333333333ddd333333b33b33ddddd34444444444333333333ddd33
+    3333b3b333dddd444444444443344433333ddd333333b3b333dddd444444444443344433333ddd333333b3b333dddd444444444443344433333ddd333333b3b333dddd444444444443344433333ddd33
+    3333bbb3443d3334444444444443444333ddddd33333bbb3443d3334444444444443444333ddddd33333bbb3443d3334444444444443444333ddddd33333bbb3443d3334444444444443444333ddddd3
+    3333bb3443334444444444444444344433dddd333333bb3443334444444444444444344433dddd333333bb3443334444444444444444344433dddd333333bb3443334444444444444444344433dddd33
+    333bb33333444444444444444444433333333333333bb33333444444444444444444433333333333333bb33333444444444444444444433333333333333bb33333444444444444444444433333333333
+    33bb333344444444444444443bb333333333b33333bb333344444444444444443bb333333333b33333bb333344444444444444443bb333333333b33333bb333344444444444444443bb333333333b333
+    33b3333433334443443443443bb333443333b33333b3333433334443443443443bb333443333b33333b3333433334443443443443bb333443333b33333b3333433334443443443443bb333443333b333
+    33b3b33333344434433444333bb333b44333b33333b3b33333344434433444333bb333b44333b33333b3b33333344434433444333bb333b44333b33333b3b33333344434433444333bb333b44333b333
+    3bb3b33333343334333334333bb333b33333b3333bb3b33333343334333334333bb333b33333b3333bb3b33333343334333334333bb333b33333b3333bb3b33333343334333334333bb333b33333b333
+    3bbbb33333333433344333333bb333b333333b333bbbb33333333433344333333bb333b333333b333bbbb33333333433344333333bb333b333333b333bbbb33333333433344333333bb333b333333b33
+    3bbb333333334433443333333bb333b333333b333bbb333333334433443333333bb333b333333b333bbb333333334433443333333bb333b333333b333bbb333333334433443333333bb333b333333b33
+    3b333333333343333333b3333bb33b3333333bbb3b333333333343333333b3333bb33b3333333bbb3b333333333343333333b3333bb33b3333333bbb3b333333333343333333b3333bb33b3333333bbb
+    bb333333333333333333b3333bbb3b333333333bbb333333333333333333b3333bbb3b333333333bbb333333333333333333b3333bbb3b333333333bbb333333333333333333b3333bbb3b333333333b
+    3b333333333333333333b3333bbbb333333333333b333333333333333333b3333bbbb333333333333b333333333333333333b3333bbbb333333333333b333333333333333333b3333bbbb33333333333
+    3b333333333333333333b3333bbbb333444333333b333333333333333333b3333bbbb333444333333b333333333333333333b3333bbbb333444333333b333333333333333333b3333bbbb33344433333
+    3b444334443333333333b3333bbb3334443333333b444334443333333333b3333bbb3334443333333b444334443333333333b3333bbb3334443333333b444334443333333333b3333bbb333444333333
+    44444433444333333333b3333bbb33444334444444444433444333333333b3333bbb33444334444444444433444333333333b3333bbb33444334444444444433444333333333b3333bbb334443344444
+    44443333b44433333333b3333bbb33333444444444443333b44433333333b3333bbb33333444444444443333b44433333333b3333bbb33333444444444443333b44433333333b3333bbb333334444444
+    44444443b33333333b33b3333bbb33334444444444444443b33333333b33b3333bbb33334444444444444443b33333333b33b3333bbb33334444444444444443b33333333b33b3333bbb333344444444
+    44444444443333333b33b3333bbbb3444434444444444444443333333b33b3333bbbb3444434444444444444443333333b33b3333bbbb3444434444444444444443333333b33b3333bbbb34444344444
+    44444344443333333b33b3333bbb4444b433443444444344443333333b33b3333bbb4444b433443444444344443333333b33b3333bbb4444b433443444444344443333333b33b3333bbb4444b4334434
+    3444333bb3bb33333b33b3333bbbb444b33443333444333bb3bb33333b33b3333bbbb444b33443333444333bb3bb33333b33b3333bbbb444b33443333444333bb3bb33333b33b3333bbbb444b3344333
+    33b4333bb3b333333bb3bb333bbbb333bb33333333b4333bb3b333333bb3bb333bbbb333bb33333333b4333bb3b333333bb3bb333bbbb333bb33333333b4333bb3b333333bb3bb333bbbb333bb333333
+    33b3333bbbb3333333bbbb333bbbb333bb33333333b3333bbbb3333333bbbb333bbbb333bb33333333b3333bbbb3333333bbbb333bbbb333bb33333333b3333bbbb3333333bbbb333bbbb333bb333333
+    33b3333bb3333333333bbb333bbbb333bb33333333b3333bb3333333333bbb333bbbb333bb33333333b3333bb3333333333bbb333bbbb333bb33333333b3333bb3333333333bbb333bbbb333bb333333
+    33b3333bb33333333333bbb33bbbb333bb33333333b3333bb33333333333bbb33bbbb333bb33333333b3333bb33333333333bbb33bbbb333bb33333333b3333bb33333333333bbb33bbbb333bb333333
+    333b333bb33333333333bbb33bbbb333bb333333333b333bb33333333333bbb33bbbb333bb333333333b333bb33333333333bbb33bbbb333bb333333333b333bb33333333333bbb33bbbb333bb333333
+    333bb3bbb3333443444334b33bbbb333bb33b333333bb3bbb3333443444334b33bbbb333bb33b333333bb3bbb3333443444334b33bbbb333bb33b333333bb3bbb3333443444334b33bbbb333bb33b333
+    333bbbbbb3334444444444443bbbbb33bb33b333333bbbbbb3334444444444443bbbbb33bb33b333333bbbbbb3334444444444443bbbbb33bb33b333333bbbbbb3334444444444443bbbbb33bb33b333
+    3333bbbbb334444444444444bbbbbb3bb33bb3333333bbbbb334444444444444bbbbbb3bb33bb3333333bbbbb334444444444444bbbbbb3bb33bb3333333bbbbb334444444444444bbbbbb3bb33bb333
+    33333bbbb333443444444434bbbbbb3bb33b333333333bbbb333443444444434bbbbbb3bb33b333333333bbbb333443444444434bbbbbb3bb33b333333333bbbb333443444444434bbbbbb3bb33b3333
+    33333bbb3344334444443433bbbbbb3bb3b3333333333bbb3344334444443433bbbbbb3bb3b3333333333bbb3344334444443433bbbbbb3bb3b3333333333bbb3344334444443433bbbbbb3bb3b33333
+    33333bbb3333344334433433bbbbbb3bbb33333333333bbb3333344334433433bbbbbb3bbb33333333333bbb3333344334433433bbbbbb3bbb33333333333bbb3333344334433433bbbbbb3bbb333333
+    33333bbb333b3433333333333bbbbbbb3333333333333bbb333b3433333333333bbbbbbb3333333333333bbb333b3433333333333bbbbbbb3333333333333bbb333b3433333333333bbbbbbb33333333
+    33333bbb333b3333333333333bbbbbbb3333333333333bbb333b3333333333333bbbbbbb3333333333333bbb333b3333333333333bbbbbbb3333333333333bbb333b3333333333333bbbbbbb33333333
+    33333bbb333b3b33333333333bbbbbbb3333333333333bbb333b3b33333333333bbbbbbb3333333333333bbb333b3b33333333333bbbbbbb3333333333333bbb333b3b33333333333bbbbbbb33333333
+    33333bbb333b3b33333333333bbbbbb33333333333333bbb333b3b33333333333bbbbbb33333333333333bbb333b3b33333333333bbbbbb33333333333333bbb333b3b33333333333bbbbbb333333333
+    33333bbb333b3b33333333333bbbbb333333333333333bbb333b3b33333333333bbbbb333333333333333bbb333b3b33333333333bbbbb333333333333333bbb333b3b33333333333bbbbb3333333333
+    33333bb3333bbb33333333333bbbbb333333333333333bb3333bbb33333333333bbbbb333333333333333bb3333bbb33333333333bbbbb333333333333333bb3333bbb33333333333bbbbb3333333333
+    33333bb333bbb333333333333bbbbb333333333333333bb333bbb333333333333bbbbb333333333333333bb333bbb333333333333bbbbb333333333333333bb333bbb333333333333bbbbb3333333333
+    3333bbb333b333333333dd333bbbbb3d333333333333bbb333b333333333dd333bbbbb3d333333333333bbb333b333333333dd333bbbbb3d333333333333bbb333b333333333dd333bbbbb3d33333333
+    3333bbb333b3333333333dd3bbbbbb33dd3333d33333bbb333b3333333333dd3bbbbbb33dd3333d33333bbb333b3333333333dd3bbbbbb33dd3333d33333bbb333b3333333333dd3bbbbbb33dd3333d3
+    3333bbb3bbb3333333333333bbbbbbb33d333dd33333bbb3bbb3333333333333bbbbbbb33d333dd33333bbb3bbb3333333333333bbbbbbb33d333dd33333bbb3bbb3333333333333bbbbbbb33d333dd3
+    dd33bbbbbb33333333d33333bbbbbbb333333d33dd33bbbbbb33333333d33333bbbbbbb333333d33dd33bbbbbb33333333d33333bbbbbbb333333d33dd33bbbbbb33333333d33333bbbbbbb333333d33
+    3dd3bbbbb33dd3333dd3333dbbbbbbbd333333333dd3bbbbb33dd3333dd3333dbbbbbbbd333333333dd3bbbbb33dd3333dd3333dbbbbbbbd333333333dd3bbbbb33dd3333dd3333dbbbbbbbd33333333
+    3dddbbbbb333dd33dd33d3ddbbbbbbbd333d33333dddbbbbb333dd33dd33d3ddbbbbbbbd333d33333dddbbbbb333dd33dd33d3ddbbbbbbbd333d33333dddbbbbb333dd33dd33d3ddbbbbbbbd333d3333
+    3dddbbb333333333d33dddddbbbbbbbdd3dd33d33dddbbb333333333d33dddddbbbbbbbdd3dd33d33dddbbb333333333d33dddddbbbbbbbdd3dd33d33dddbbb333333333d33dddddbbbbbbbdd3dd33d3
+    ddddbbbd33333333333dddddbbbbbbbdddd33dddddddbbbd33333333333dddddbbbbbbbdddd33dddddddbbbd33333333333dddddbbbbbbbdddd33dddddddbbbd33333333333dddddbbbbbbbdddd33ddd
+    ddddbbbd333d33ddd33dddddbbbbbbbdddddddddddddbbbd333d33ddd33dddddbbbbbbbdddddddddddddbbbd333d33ddd33dddddbbbbbbbdddddddddddddbbbd333d33ddd33dddddbbbbbbbddddddddd
+    ddddbbbd33ddd3dddd3dddddbbbbbbbdddddddddddddbbbd33ddd3dddd3dddddbbbbbbbdddddddddddddbbbd33ddd3dddd3dddddbbbbbbbdddddddddddddbbbd33ddd3dddd3dddddbbbbbbbddddddddd
+    ddddbbbdddddddddddddddddbbbbbbbdddddddddddddbbbdddddddddddddddddbbbbbbbdddddddddddddbbbdddddddddddddddddbbbbbbbdddddddddddddbbbdddddddddddddddddbbbbbbbddddddddd
+    ddddbbb3ddddddddddddddddbbbbbbbdddddddddddddbbb3ddddddddddddddddbbbbbbbdddddddddddddbbb3ddddddddddddddddbbbbbbbdddddddddddddbbb3ddddddddddddddddbbbbbbbddddddddd
+    ddddbbb3ddddddddddddddddbbbbbbbdddddddddddddbbb3ddddddddddddddddbbbbbbbdddddddddddddbbb3ddddddddddddddddbbbbbbbdddddddddddddbbb3ddddddddddddddddbbbbbbbddddddddd
+    ddddbbbbddddddddddddddddbbbbbbbdddddddddddddbbbbddddddddddddddddbbbbbbbdddddddddddddbbbbddddddddddddddddbbbbbbbdddddddddddddbbbbddddddddddddddddbbbbbbbddddddddd
+    ddddbbbbddddddddddddddddbbbbbbbdddddddddddddbbbbddddddddddddddddbbbbbbbdddddddddddddbbbbddddddddddddddddbbbbbbbdddddddddddddbbbbddddddddddddddddbbbbbbbddddddddd
+    ddddbbbbddddddddddddddddbbbbbbbdddddddddddddbbbbddddddddddddddddbbbbbbbdddddddddddddbbbbddddddddddddddddbbbbbbbdddddddddddddbbbbddddddddddddddddbbbbbbbddddddddd
+    ddddbbbb3dddddddddddddddbbbbbbbdddddddddddddbbbb3dddddddddddddddbbbbbbbdddddddddddddbbbb3dddddddddddddddbbbbbbbdddddddddddddbbbb3dddddddddddddddbbbbbbbddddddddd
+    ddddbbbbbdddddddddddddddbbbbbbbdddddddddddddbbbbbdddddddddddddddbbbbbbbdddddddddddddbbbbbdddddddddddddddbbbbbbbdddddddddddddbbbbbdddddddddddddddbbbbbbbddddddddd
+    ddddbbbbbdddddddddddddddbbbbbbbdddddddddddddbbbbbdddddddddddddddbbbbbbbdddddddddddddbbbbbdddddddddddddddbbbbbbbdddddddddddddbbbbbdddddddddddddddbbbbbbbddddddddd
+    ddddbbbbb3ddddddddddddd3bbbbbbb3ddddddddddddbbbbb3ddddddddddddd3bbbbbbb3ddddddddddddbbbbb3ddddddddddddd3bbbbbbb3ddddddddddddbbbbb3ddddddddddddd3bbbbbbb3dddddddd
+    ddddbbbbb3dddddddddddddbbbbbbbb3ddddddddddddbbbbb3dddddddddddddbbbbbbbb3ddddddddddddbbbbb3dddddddddddddbbbbbbbb3ddddddddddddbbbbb3dddddddddddddbbbbbbbb3dddddddd
+    ddd3bbbbbbdddddddddddddbbbbbbbbbddddddddddd3bbbbbbdddddddddddddbbbbbbbbbddddddddddd3bbbbbbdddddddddddddbbbbbbbbbddddddddddd3bbbbbbdddddddddddddbbbbbbbbbdddddddd
+    ddd3bbbbbbdddddddddddd3bbbbbbbbbddddddddddd3bbbbbbdddddddddddd3bbbbbbbbbddddddddddd3bbbbbbdddddddddddd3bbbbbbbbbddddddddddd3bbbbbbdddddddddddd3bbbbbbbbbdddddddd
+    443bbbbbbb3dddddddddddbbbbbbbb4444444444443bbbbbbb3dddddddddddbbbbbbbb4444444444443bbbbbbb3dddddddddddbbbbbbbb4444444444443bbbbbbb3dddddddddddbbbbbbbb4444444444
+    44444444bbbddddddddd33bbb44444444444444444444444bbbddddddddd33bbb44444444444444444444444bbbddddddddd33bbb44444444444444444444444bbbddddddddd33bbb444444444444444
+    4444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444
+    4444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444
+    4444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444
+    4444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444
+    4444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444
+    4444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444
+    4444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444
+    4444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444
+    4444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444
+    4444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444
+    4444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444
+    4444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444
+    4444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444
+    4444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444
+    4444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444
+    4444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444
+    4444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444
+    4444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444
+    4444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444
+    4444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444
+    4444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444
+    4444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444
+    4444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444
+    4444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444
+    4444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444
+    4444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444
+    4444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444
+    4444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444
+    4444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444
+    `)
+// =========================
+// BAILARINA AZUL
+// =========================
+bailarina = sprites.create(img`
+    . . . . . . f f f f 4 4 f . . . 
+    . . . . f f b f 5 4 5 5 4 f . . 
+    . . . f b 3 3 e 4 5 5 5 5 f . . 
+    . . f b 3 3 3 3 e 4 4 4 e f . . 
+    . . f 3 3 3 3 3 3 3 3 3 3 f . . 
+    . . f 3 3 3 3 e b 3 e e 3 3 f . 
+    . . f 3 3 3 3 f f e e e 3 3 f . 
+    . . f b b b b f b f e e e 3 f . 
+    . . f b b b b e 1 f 4 4 e f . . 
+    . f f b b b b f 4 4 4 4 f . . . 
+    . f b b b b f f f e e e f . . . 
+    . . f b b f 4 4 e 8 8 8 f . . . 
+    . . . f f e 4 4 e 8 8 8 f . . . 
+    . . . . f 6 e e 6 8 6 8 6 f . . 
+    . . . . f f 6 9 6 6 6 9 f f . . 
+    . . . . . . f f f f f f . . . . 
+    `, SpriteKind.Player)
+bailarina.setPosition(35, 100)
+bailarina.ay = 300
+// =========================
+// PLACAR E VIDAS
+// =========================
+info.setScore(0)
+info.setLife(vidas)
+game.splash("BAILARINA", "A = PULAR")
+music.setVolume(80)
+cristal = criarCristal()
+// =========================
+// LOOP PRINCIPAL
+// =========================
+game.onUpdate(function () {
+    if (cristal.x < -10) {
+        pontos += 1
+        info.setScore(pontos)
+        cristal.destroy()
+        velocidade = Math.min(velocidade + 5, velocidadeMax)
+        cristal = criarCristal()
+    }
+    if (bailarina.y > 100) {
+        bailarina.y = 100
+        bailarina.vy = 0
     }
 })
